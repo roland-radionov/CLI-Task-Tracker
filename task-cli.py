@@ -104,6 +104,24 @@ def mark_task(args: list[str], tasks_file: str, new_status: str):
     if save_tasks(tasks_file, data):
         print(f"(ID: {id}) Task marked as \'{new_status}\' successfully")
 
+def list_tasks(args: list[str], tasks_file: str):
+    if len(args) > 3:
+        sys.exit("Error: Too many arguments")
+
+    data = load_tasks(tasks_file)
+    if not data:
+        sys.exit("No tasks found.")
+    
+    status_filter = args[2] if len(args) == 3 else None
+    tasks_to_show = [t for t in data if status_filter is None or t['status'] == status_filter]
+    for task in tasks_to_show:
+        print(f"(ID: {task['id']})\n"
+              f"  Description: {task['description']}\n"
+              f"  Status: {task['status']}\n"
+              f"  Created: {task['createdAt']}\n"
+              f"  Updated: {task['updatedAt']}\n")
+    
+    print(f"<{'-'*10} Total tasks: {len(tasks_to_show)} {'-'*10}>")
 
 args = sys.argv
 if len(args) < 2:
@@ -129,6 +147,9 @@ match action:
     
     case "mark-done":
         mark_task(args, tasks_file, "done")
+
+    case "list":
+        list_tasks(args, tasks_file)
 
     case _:
         print("Valid actions - add, update, delete")
