@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import uuid
 import json
@@ -123,33 +125,37 @@ def list_tasks(args: list[str], tasks_file: str):
     
     print(f"<{'-'*10} Total tasks: {len(tasks_to_show)} {'-'*10}>")
 
-args = sys.argv
-if len(args) < 2:
-    sys.exit("Error: You have not specified an action (add, update, delete)")
-action = args[1]
-tasks_file = "tasks.json"
+def main():
+    args = sys.argv
+    if len(args) < 2:
+        sys.exit("Error: You have not specified an action (add, update, delete)")
+    action = args[1]
+    tasks_file = "tasks.json"
 
-match action:
-    case "add":
-        add(args, tasks_file)
-    
-    case "update":
-        update(args, tasks_file)
+    match action:
+        case "add":
+            add(args, tasks_file)
+        
+        case "update":
+            update(args, tasks_file)
 
-    case "delete":
-        delete(args, tasks_file)
-    
-    case "mark-in-progress":
-        mark_task(args, tasks_file, "in-progress")
-    
-    case "mark-todo":
-        mark_task(args, tasks_file, "todo")
-    
-    case "mark-done":
-        mark_task(args, tasks_file, "done")
+        case "delete":
+            delete(args, tasks_file)
+        
+        case "mark-in-progress":
+            mark_task(args, tasks_file, "in-progress")
+        
+        case "mark-todo":
+            mark_task(args, tasks_file, "todo")
+        
+        case "mark-done":
+            mark_task(args, tasks_file, "done")
 
-    case "list":
-        list_tasks(args, tasks_file)
+        case "list":
+            list_tasks(args, tasks_file)
 
-    case _:
-        print("Valid actions - add, update, delete")
+        case _:
+            print("Valid actions: add, update, delete, list, mark-todo, mark-in-progress, mark-done")
+
+if __name__ == "__main__":
+    main()
