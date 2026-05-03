@@ -33,7 +33,7 @@ def save_tasks(tasks_file: str, data: list[dict]) -> bool:
 
 def add(args: list[str], tasks_file: str):
     if len(args) < 3:
-        sys.exit("Error: The task text was not entered.")
+        sys.exit("Error: Missing task description")
 
     task = get_task(args[2])
     data = load_tasks(tasks_file)
@@ -50,14 +50,20 @@ def update(args: list[str], tasks_file: str):
     data = load_tasks(tasks_file)
     if not data:
         sys.exit("Error: You haven't added any tasks yet.")
-        
+    
+    found = False
     for task in data:
         if task['id'] == id:
             task['description'] = new_description
             task['updatedAt'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+            found = True
+            break
+    
+    if not found:
+        sys.exit(f"Error: Task with ID {id} not found.")
 
     if save_tasks(tasks_file, data):
-        print(f"(ID: {id}) The task description has been successfully changed to \"{new_description}\"")
+        print(f"(ID: {id}) Task description updated successfully to \"{new_description}\"")
 
 def delete(args: list[str], tasks_file: str):
     if len(args) < 3:
@@ -75,6 +81,30 @@ def delete(args: list[str], tasks_file: str):
     if save_tasks(tasks_file, new_data):
         print(f"(ID: {id}) The task has been successfully deleted")
 
+def mark_task(args: list[str], tasks_file: str, new_status: str):
+    if len(args) < 3:
+        sys.exit("Error: The ID of the task to be marked is not specified.")
+
+    id = args[2]
+    data = load_tasks(tasks_file)
+    if not data:
+        sys.exit("Error: You haven't added any tasks yet.")
+
+    found = False
+    for task in data:
+        if task['id'] == id:
+            task['status'] = new_status
+            task['updatedAt'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+            found = True
+            break
+
+    if not found:
+        sys.exit(f"Error: Task with ID {id} not found.")
+    
+    if save_tasks(tasks_file, data):
+        print(f"(ID: {id}) Task marked as \'{new_status}\' successfully")
+
+
 args = sys.argv
 if len(args) < 2:
     sys.exit("Error: You have not specified an action (add, update, delete)")
@@ -90,6 +120,15 @@ match action:
 
     case "delete":
         delete(args, tasks_file)
+    
+    case "mark-in-progress":
+        mark_task(args, tasks_file, "in-progress")
+    
+    case "mark-todo":
+        mark_task(args, tasks_file, "todo")
+    
+    case "mark-done":
+        mark_task(args, tasks_file, "done")
 
     case _:
         print("Valid actions - add, update, delete")
