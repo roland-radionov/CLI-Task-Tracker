@@ -4,6 +4,7 @@ import sys
 import uuid
 import json
 from datetime import datetime
+from pathlib import Path
 
 def get_task(description: str) -> dict:
     return {
@@ -130,7 +131,7 @@ def main():
     if len(args) < 2:
         sys.exit("Error: You have not specified an action (add, update, delete)")
     action = args[1]
-    tasks_file = "tasks.json"
+    tasks_file = str(Path.home() / ".tasks.json")
 
     match action:
         case "add":
