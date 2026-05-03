@@ -27,8 +27,11 @@ match action:
         try:
             with open(tasks_file, "r", encoding='utf-8') as file:
                 data = json.load(file)
-        except (FileNotFoundError, json.JSONDecodeError):
+        except FileNotFoundError:
             data = []
+        except json.JSONDecodeError:
+            sys.exit(f"Error: JSON syntax error in file {tasks_file}")
+
         data.append(task)
         try:
             with open(tasks_file, "w", encoding='utf-8') as file:
@@ -49,7 +52,7 @@ match action:
         except FileNotFoundError:
             sys.exit("Error: You haven't added any tasks yet.")
         except json.JSONDecodeError as e:
-            sys.exit(e)
+            sys.exit(f"Error: JSON syntax error in file {tasks_file}")
         
         for task in data:
             if task['id'] == id:
@@ -74,7 +77,7 @@ match action:
         except FileNotFoundError:
             sys.exit("Error: You haven't added any tasks yet.")
         except json.JSONDecodeError as e:
-            sys.exit(e)
+            sys.exit(f"Error: JSON syntax error in file {tasks_file}")
 
         new_data = [task for task in data if task["id"] != id]
         if len(new_data) == len(data):
