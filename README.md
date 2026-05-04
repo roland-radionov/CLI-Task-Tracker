@@ -1,6 +1,6 @@
 # CLI Task Tracker
 
-**Project URL:** https://github.com/roland-radionov/CLI-Task-Tracker
+**Project URL:** https://roadmap.sh/projects/task-tracker
 
 [🌐 Source Code](https://github.com/roland-radionov/CLI-Task-Tracker) | [🪪 License: MIT](LICENSE)
 
