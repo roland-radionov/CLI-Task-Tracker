@@ -1,5 +1,7 @@
 # CLI Task Tracker
 
+[🌐 Source Code](https://github.com/roland-radionov/CLI-Task-Tracker) | [🪪 License: MIT](LICENSE)
+
 A simple command-line task manager to create, manage, and display your tasks.
 
 ## **Features**
@@ -11,7 +13,7 @@ A simple command-line task manager to create, manage, and display your tasks.
 
 1. **Clone the repository:**
 ```bash
-git clone <repository-url>
+git clone https://github.com/roland-radionov/CLI-Task-Tracker.git
 cd CLI-Task-Tracker
 ```
 
